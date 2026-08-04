@@ -1,0 +1,10 @@
+<button class="home__button" (click)="goHome()">Home</button>
+
+<h2>Log In</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input type="email" formControlName="email" placeholder="Email" />
+  <input type="password" formControlName="password" placeholder="Password" />
+
+  <button type="submit">Log In</button>
+</form>

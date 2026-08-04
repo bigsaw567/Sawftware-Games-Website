@@ -1,0 +1,13 @@
+<button class="home__button" (click)="goHome()">Home</button>
+
+<h2>Sign Up</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <input type="text" formControlName="name" placeholder="Name" />
+  <input type="email" formControlName="email" placeholder="Email" />
+  <input type="password" formControlName="password" placeholder="Password" />
+
+  <button type="submit">Create Account</button>
+</form>
+
+<p>{{ message }}</p>
