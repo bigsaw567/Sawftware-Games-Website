@@ -7,15 +7,44 @@ export interface SignupRequest {
   password: string;
 }
 
+export interface SignupResponse {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  id: number;
+  name: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
 
-  private apiBaseUrl = 'http://localhost:5014/api/auth'; // change to your backend port
+  private apiBaseUrl = 'http://localhost:5014/api/auth';
 
   signup(payload: SignupRequest) {
-    return this.http.post(`${this.apiBaseUrl}/signup`, payload);
+    return this.http.post<SignupResponse>(
+      `${this.apiBaseUrl}/signup`,
+      payload,
+      { withCredentials: true }
+    );
+  }
+
+  login(payload: LoginRequest) {
+    return this.http.post<LoginResponse>(
+      `${this.apiBaseUrl}/login`,
+      payload,
+      { withCredentials: true }
+    );
   }
 }
