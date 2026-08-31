@@ -2,7 +2,7 @@ This Project was made with Angular CLI version _____.
 
 Link to Site: 
 
-App Tech Stack: Angular 20, TypeScript, ASP.NET Core (.NET 8), C#, Entity Framework Core 8, SQL Server Express, Swagger/OpenAPI, Git, GitHub
+App Tech Stack: Angular 20, TypeScript, ASP.NET Core (.NET 8), C#, Entity Framework Core 8, SQL Server Express, Swagger/OpenAPI (Rest API), Git, GitHub
 
 How to Use the Website:
 
