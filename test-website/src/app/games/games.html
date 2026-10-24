@@ -1,0 +1,11 @@
+<section class="page-intro shell"><p class="eyebrow">{{ published ? 'READY TO EXPLORE' : 'A WORK IN PROGRESS' }}</p><h1>{{ published ? 'Published games.' : 'Worlds in the making.' }}</h1><p>{{ published ? 'A home for our released games. Discover the worlds we’ve brought to life.' : 'Good things take imagination, iteration, and a little time. Here’s a look at what’s next.' }}</p></section>
+<section class="shell catalog-section" aria-label="Game catalog">
+  <div class="catalog-tabs"><a routerLink="/in-development" [class.selected]="!published">In development</a><a routerLink="/published" [class.selected]="published">Published games</a><span>THE SAWFTWARE COLLECTION</span></div>
+  <p class="placeholder-note">This collection is getting started. The spaces below are placeholders for future game announcements.</p>
+  <div class="game-grid">@for (game of games; track $index) {
+    <article class="game-card"><div class="game-cover" [class.alternate-cover]="$index % 2 === 1">
+      @if (game.cover) { <img [src]="game.cover" [alt]="game.title + ' cover art'"> } @else { <span class="cover-index">SG / 0{{ $index + 1 }}</span><span class="cover-shape" aria-hidden="true"></span><span class="cover-label">GAME COVER<br><small>ARTWORK COMING LATER</small></span><span class="cover-plus" aria-hidden="true">+</span> }
+    </div><div class="game-info"><span class="badge">{{ published ? 'FUTURE RELEASE SLOT' : 'UPCOMING PROJECT SLOT' }}</span><h2>{{ game.title }}</h2><p>{{ game.description }}</p><span class="game-meta">{{ published ? 'Release details to come' : 'Development updates to come' }} <span aria-hidden="true">↗</span></span></div></article>
+  }</div>
+</section>
+<section class="community-banner shell"><div><p class="eyebrow">YOUR VOICE MATTERS</p><h2>Help shape what comes next.</h2><p>We’d love to hear your ideas and feedback.</p></div><a class="button" routerLink="/feedback">Share your thoughts <span aria-hidden="true">↗</span></a></section>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="310" height="70" viewBox="0 0 310 70" fill="none" role="img" aria-labelledby="logo-title">
+  <title id="logo-title">Sawftware Games</title>
+  <!-- Transparent background; the light lettering is intended for dark surfaces. -->
+  <g transform="translate(12 14) skewX(-7)">
+    <path d="M0 0H39V42H0Z" stroke="#f34749" stroke-width="2"/>
+    <path d="M28 10H16L11 20H26L21 32H8" stroke="#f34749" stroke-width="4" stroke-linejoin="bevel"/>
+    <path d="M31 5L45-9M34-9H45V2" stroke="#f34749" stroke-width="2.5" stroke-linecap="square"/>
+  </g>
+  <text x="67" y="34" fill="#f3f1ed" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="900" letter-spacing="1">SAWFTWARE</text>
+  <text x="68" y="53" fill="#a3a2a8" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="7">GAMES</text>
+</svg>

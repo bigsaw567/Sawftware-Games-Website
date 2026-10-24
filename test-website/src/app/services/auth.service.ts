@@ -1,5 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs';
 
 export interface SignupRequest {
   name: string;
@@ -29,6 +30,8 @@ export interface LoginResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private readonly user = signal<LoginResponse | null>(null);
+  readonly currentUser = this.user.asReadonly();
 
   private apiBaseUrl = 'http://localhost:5014/api/auth';
 
@@ -45,6 +48,6 @@ export class AuthService {
       `${this.apiBaseUrl}/login`,
       payload,
       { withCredentials: true }
-    );
+    ).pipe(tap(response => this.user.set(response)));
   }
 }

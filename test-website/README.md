@@ -1,4 +1,18 @@
-# TestWebsite
+# Sawftware Games
+
+Black and red Angular studio website with shared navigation, home/developer profiles, matching development and published game catalogs, login, signup, and a feedback/bug report form.
+
+## Updating content
+
+- Developer photo, name, career title, and biography: `src/app/home/home.html`. Replace the `portrait-placeholder` block with your image when ready.
+- Game titles, descriptions, and covers: `developmentGames` and `publishedGames` in `src/app/games/games.ts`. Place cover files in `public/` and set `cover` to their path (for example, `/covers/my-game.webp`). The two catalogs share `src/app/games/games.html`.
+- Theme and responsive layouts: `src/styles.css`.
+
+## API integration
+
+Existing login and signup requests remain in `src/app/services/auth.service.ts`. Successful login returns to the home page; the old `/dashboard` URL also redirects there.
+
+The feedback form expects `POST http://localhost:5014/api/feedback`, with credentials enabled and a JSON body containing `name`, `email`, `category` (`feedback`, `bug`, or `idea`), optional `game`, `subject`, and `message`. It shows success only after a successful HTTP response and preserves entered content if a request fails. Implement this endpoint against your planned feedback table; this frontend change does not create a database table or backend endpoint. Validate these fields server-side as well. Update the API URLs for production hosting.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.1.
 

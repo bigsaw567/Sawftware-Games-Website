@@ -1,1 +1,21 @@
-<router-outlet />
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header"><div class="nav-shell">
+  <a class="brand" routerLink="/home" (click)="menuOpen = false" aria-label="Sawftware Games home"><span class="brand-symbol" aria-hidden="true">S<span>↗</span></span><span>SAWFTWARE<span class="brand-subtitle">GAMES</span></span></a>
+  <button class="menu-toggle" type="button" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-controls="primary-nav">{{ menuOpen ? 'Close ✕' : 'Menu ☰' }}</button>
+  <nav id="primary-nav" [class.is-open]="menuOpen" aria-label="Main navigation" (click)="menuOpen = false">
+    <a routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a><a routerLink="/in-development" routerLinkActive="active" ariaCurrentWhenActive="page">In development</a><a routerLink="/published" routerLinkActive="active" ariaCurrentWhenActive="page">Published games</a><a routerLink="/feedback" routerLinkActive="active" ariaCurrentWhenActive="page">Feedback</a>
+    @if (!auth.currentUser()) {
+      <div class="nav-account"><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Log in</a><a class="button button-small" routerLink="/signup">Join the community <span aria-hidden="true">↗</span></a></div>
+    }
+  </nav>
+  @if (auth.currentUser(); as user) {
+    <details class="profile-menu">
+      <summary class="profile-icon" [attr.aria-label]="'Profile for ' + user.name" [title]="user.name">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+      </summary>
+      <div class="profile-card"><span class="eyebrow">SIGNED IN AS</span><strong>{{ user.name }}</strong><span>{{ user.email }}</span></div>
+    </details>
+  }
+</div></header>
+<main id="main-content" tabindex="-1"><router-outlet /></main>
+<footer class="site-footer shell"><a class="footer-brand" routerLink="/home">SAWFTWARE <span>GAMES</span></a><p>Independent spirit. A world of possibilities.</p><a routerLink="/feedback">Let’s make better games <span aria-hidden="true">↗</span></a></footer>

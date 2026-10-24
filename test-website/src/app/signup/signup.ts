@@ -1,59 +1,37 @@
-import { Component } from '@angular/core';
+﻿import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-@Component({
-  selector: 'app-signup',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './signup.html'
-})
+@Component({ selector: 'app-signup', standalone: true, imports: [CommonModule, ReactiveFormsModule, RouterLink], templateUrl: './signup.html' })
 export class Signup {
   form: FormGroup;
-  message = '';
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService
-  ) {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
+  readonly message = signal('');
+  readonly pending = signal(false);
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
+    this.form = this.fb.group({ name: ['', Validators.required], email: ['', [Validators.required, Validators.email]], password: ['', Validators.required] });
   }
-
   submit(): void {
-
+    if (this.pending()) return;
     if (this.form.invalid) {
-      this.message = 'Please fill out all fields.';
+      this.form.markAllAsTouched();
+      this.message.set('Please fill out all fields and enter a valid email address.');
       return;
     }
-
+    this.pending.set(true);
+    this.message.set('');
     this.authService.signup(this.form.value).subscribe({
-      next: (response) => {
-        console.log('Account created!', response);
-
-        this.message = 'Account created successfully!';
-
+      next: () => {
+        this.pending.set(false);
+        this.message.set('Account created! You can now log in using the link below.');
         this.form.reset();
-
-        // Optional: automatically return to the home page
-        // this.router.navigate(['/home']);
       },
-
-      error: (error) => {
-        console.error(error);
-
-        this.message = 'Failed to create account.';
+      error: () => {
+        this.pending.set(false);
+        this.message.set('Failed to create account. Please try again.');
       }
     });
   }
-
-  goHome(): void {
-    this.router.navigate(['/home']);
-  }
+  goHome(): void { this.router.navigate(['/home']); }
 }
