@@ -50,6 +50,9 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "pi": {
+              "outputMode": "static"
             }
           },
           "defaultConfiguration": "production"
@@ -64,7 +67,10 @@
               "buildTarget": "test-website:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

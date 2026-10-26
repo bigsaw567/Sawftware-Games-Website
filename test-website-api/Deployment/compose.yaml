@@ -1,0 +1,115 @@
+name: sawftware-games
+
+x-api-environment: &api-environment
+  ASPNETCORE_ENVIRONMENT: Production
+  ASPNETCORE_HTTP_PORTS: "8080"
+  Database__Host: db
+  Database__Port: "5432"
+  Database__Name: ${POSTGRES_DB:?Set POSTGRES_DB in .env}
+  Database__User: ${POSTGRES_USER:?Set POSTGRES_USER in .env}
+  Database__Password: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+  Database__MaxPoolSize: "10"
+  ReverseProxy__KnownProxy: 172.30.80.2
+  DataProtection__KeysPath: /var/app/keys
+  DOTNET_gcServer: "0"
+  DOTNET_GCHeapHardLimit: "0x08000000"
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:17.11-bookworm
+    platform: linux/arm/v7
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    command: ["postgres", "-c", "shared_buffers=32MB", "-c", "max_connections=20", "-c", "work_mem=2MB", "-c", "maintenance_work_mem=32MB"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [database]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    shm_size: 64m
+    mem_limit: 256m
+    logging: *logging
+
+  api:
+    image: sawftware-api:pi-armv7
+    platform: linux/arm/v7
+    build:
+      context: ../..
+      dockerfile: test-website-api/Deployment/Dockerfile.api
+    restart: unless-stopped
+    environment: *api-environment
+    volumes:
+      - api_keys:/var/app/keys
+    networks: [proxy, database]
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 320m
+    logging: *logging
+
+  migrate:
+    image: sawftware-api:pi-armv7
+    platform: linux/arm/v7
+    profiles: [tools]
+    restart: "no"
+    command: ["--migrate"]
+    environment: *api-environment
+    volumes:
+      - api_keys:/var/app/keys
+    networks: [database]
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 320m
+    logging: *logging
+
+  web:
+    image: sawftware-web:pi-armv7
+    platform: linux/arm/v7
+    build:
+      context: ../..
+      dockerfile: test-website-api/Deployment/Dockerfile.web
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?Set an https:// LAN IP or hostname in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      proxy:
+        ipv4_address: 172.30.80.2
+    depends_on:
+      api:
+        condition: service_started
+    mem_limit: 96m
+    logging: *logging
+
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.30.80.0/24
+  database:
+    internal: true
+
+volumes:
+  postgres_data:
+  api_keys:
+  caddy_data:
+  caddy_config:

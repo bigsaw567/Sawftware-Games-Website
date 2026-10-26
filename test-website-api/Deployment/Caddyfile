@@ -1,0 +1,22 @@
+{
+	skip_install_trust
+}
+
+{$SITE_ADDRESS} {
+	# A private CA provides HTTPS for a LAN IP/hostname without a public domain.
+	tls internal
+	encode gzip
+
+	@api path /api /api/*
+	handle @api {
+		# Preserve /api: handle_path would strip it and break existing routes.
+		reverse_proxy api:8080
+	}
+
+	handle {
+		root * /srv
+		try_files {path} {path}/index.html /index.html
+		header Cache-Control "no-cache"
+		file_server
+	}
+}

@@ -6,3 +6,10 @@ obj/
 appsettings.Local.json
 *.user
 *.log
+Deployment/artifacts/
+Deployment/*.tar.gz
+Deployment/.secrets/
+Deployment/backups/
+Deployment/.deploy.lock
+Deployment/.deployed-revision
+Deployment/caddy-root.crt

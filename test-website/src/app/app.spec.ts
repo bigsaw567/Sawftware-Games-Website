@@ -23,7 +23,7 @@ describe('App', () => {
 
     TestBed.inject(AuthService).login({ email: 'player@example.com', password: 'password' }).subscribe();
     const http = TestBed.inject(HttpTestingController);
-    http.expectOne('http://localhost:5014/api/auth/login').flush({ id: 1, name: 'Player', email: 'player@example.com' });
+    http.expectOne('/api/auth/login').flush({ id: 1, name: 'Player', email: 'player@example.com' });
     fixture.detectChanges();
 
     expect(element.querySelector('a[href="/login"]')).toBeNull();
@@ -37,7 +37,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     TestBed.inject(AuthService).login({ email: 'player@example.com', password: 'incorrect' }).subscribe({ error: () => {} });
     const http = TestBed.inject(HttpTestingController);
-    http.expectOne('http://localhost:5014/api/auth/login').flush({}, { status: 401, statusText: 'Unauthorized' });
+    http.expectOne('/api/auth/login').flush({}, { status: 401, statusText: 'Unauthorized' });
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('a[href="/login"]')).toBeTruthy();

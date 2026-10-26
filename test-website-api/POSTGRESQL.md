@@ -48,7 +48,9 @@ dotnet build
 dotnet run --launch-profile http
 ```
 
-The existing Angular client calls `http://localhost:5014`. In a separate terminal:
+The Angular development server proxies relative `/api/...` requests to
+`http://localhost:5014`. Restart `ng serve` after changes to `proxy.conf.json`.
+In a separate terminal:
 
 ```powershell
 cd ..\test-website

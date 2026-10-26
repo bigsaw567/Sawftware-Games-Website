@@ -1,0 +1,17 @@
+# Allow only the backend sources needed by this image, relative to the Git root.
+**
+!test-website-api/
+!test-website-api/test-website-api.csproj
+!test-website-api/Program.cs
+!test-website-api/appsettings.json
+!test-website-api/Controllers/
+!test-website-api/Controllers/**
+!test-website-api/Data/
+!test-website-api/Data/**
+!test-website-api/Dtos/
+!test-website-api/Dtos/**
+!test-website-api/Models/
+!test-website-api/Models/**
+!test-website-api/Migrations/
+!test-website-api/Migrations/**
+test-website-api/Migrations/SqlServerArchive/

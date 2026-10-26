@@ -1,0 +1,16 @@
+[
+  {
+    "image": "mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-arm32v7",
+    "platform": "linux/arm/v7",
+    "digest": "sha256:f91469d15f58a25123a48e5d6d30b201e36bd96aec4b24f7c8575ad903e36b33",
+    "configArchitecture": "arm",
+    "configOs": "linux"
+  },
+  {
+    "image": "registry-1.docker.io/library/node:22-bookworm-slim",
+    "platform": "linux/arm/v7",
+    "digest": "sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d",
+    "configArchitecture": "arm",
+    "configOs": "linux"
+  }
+]

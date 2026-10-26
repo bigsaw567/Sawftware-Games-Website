@@ -26,6 +26,9 @@
     <Compile Remove="Verification/**/*.cs" />
     <Content Remove="Verification/**" />
     <None Remove="Verification/**" />
+    <Content Remove="Deployment/**" />
+    <None Remove="Deployment/**" />
+    <Compile Remove="Deployment/**" />
   </ItemGroup>
 
 </Project>

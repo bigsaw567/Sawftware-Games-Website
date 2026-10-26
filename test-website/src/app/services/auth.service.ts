@@ -33,7 +33,7 @@ export class AuthService {
   private readonly user = signal<LoginResponse | null>(null);
   readonly currentUser = this.user.asReadonly();
 
-  private apiBaseUrl = 'http://localhost:5014/api/auth';
+  private apiBaseUrl = '/api/auth';
 
   signup(payload: SignupRequest) {
     return this.http.post<SignupResponse>(

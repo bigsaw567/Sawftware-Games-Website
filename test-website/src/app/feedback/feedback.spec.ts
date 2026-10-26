@@ -16,14 +16,14 @@ describe('Feedback submission', () => {
   const report = { name: 'Player', email: 'player@example.com', category: 'bug', game: 'Example', subject: 'A bug', message: 'Steps to reproduce the issue.' };
   it('blocks incomplete reports before making an API request', () => {
     component.submit();
-    http.expectNone('http://localhost:5014/api/feedback');
+    http.expectNone('/api/feedback');
     expect(component.message()).toContain('required fields');
   });
   it('sends one request, then clears the form only after success', () => {
     component.form.setValue(report);
     component.submit();
     component.submit();
-    const request = http.expectOne('http://localhost:5014/api/feedback');
+    const request = http.expectOne('/api/feedback');
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual(report);
     expect(request.request.withCredentials).toBeTrue();
@@ -36,7 +36,7 @@ describe('Feedback submission', () => {
   it('preserves the report when the server fails', () => {
     component.form.setValue(report);
     component.submit();
-    http.expectOne('http://localhost:5014/api/feedback').flush({}, { status: 500, statusText: 'Server error' });
+    http.expectOne('/api/feedback').flush({}, { status: 500, statusText: 'Server error' });
     expect(component.form.getRawValue()).toEqual(report);
     expect(component.success()).toBeFalse();
     expect(component.pending()).toBeFalse();

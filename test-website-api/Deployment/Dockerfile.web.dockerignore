@@ -1,0 +1,14 @@
+# Allow only Angular source/config/assets and the Caddy configuration.
+**
+!test-website/
+!test-website/package.json
+!test-website/package-lock.json
+!test-website/angular.json
+!test-website/tsconfig*.json
+!test-website/src/
+!test-website/src/**
+!test-website/public/
+!test-website/public/**
+!test-website-api/
+!test-website-api/Deployment/
+!test-website-api/Deployment/Caddyfile

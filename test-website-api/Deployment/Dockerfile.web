@@ -1,0 +1,12 @@
+FROM node:22-bookworm-slim AS build
+WORKDIR /src
+ENV NG_BUILD_MAX_WORKERS=1
+ENV NODE_OPTIONS=--max-old-space-size=640
+COPY test-website/package.json test-website/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY test-website/ ./
+RUN npm run build -- --configuration production,pi --output-path /out
+
+FROM caddy:2.11.7-alpine
+COPY test-website-api/Deployment/Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /out/browser/ /srv/

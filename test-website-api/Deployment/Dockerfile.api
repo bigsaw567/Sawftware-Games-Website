@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-arm32v7 AS build
+WORKDIR /src
+COPY test-website-api/test-website-api.csproj ./
+RUN dotnet restore --runtime linux-arm
+COPY test-website-api/ ./
+RUN dotnet publish --configuration Release --runtime linux-arm --self-contained false \
+    --no-restore --output /out -p:UseAppHost=false -p:PublishReadyToRun=false \
+    -p:BuildInParallel=false -maxcpucount:1
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim-arm32v7
+WORKDIR /app
+COPY --from=build /out/ ./
+RUN mkdir -p /var/app/keys && chown $APP_UID:$APP_UID /var/app/keys
+USER $APP_UID
+ENV ASPNETCORE_HTTP_PORTS=8080
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "test-website-api.dll"]

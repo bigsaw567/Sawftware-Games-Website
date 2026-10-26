@@ -28,7 +28,7 @@ export class Feedback {
     this.pending.set(true);
     this.message.set('');
     // Connect the planned feedback table through this API endpoint.
-    this.http.post('http://localhost:5014/api/feedback', this.form.getRawValue(), { withCredentials: true }).subscribe({
+    this.http.post('/api/feedback', this.form.getRawValue(), { withCredentials: true }).subscribe({
       next: () => {
         this.pending.set(false);
         this.success.set(true);
