@@ -53,7 +53,10 @@ services:
     environment: *api-environment
     volumes:
       - api_keys:/var/app/keys
-    networks: [proxy, database]
+    networks:
+      proxy:
+        ipv4_address: 172.30.80.3
+      database: {}
     depends_on:
       db:
         condition: service_healthy
