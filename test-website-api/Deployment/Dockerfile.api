@@ -1,10 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-arm32v7 AS build
 WORKDIR /src
-COPY test-website-api/test-website-api.csproj ./
-RUN dotnet restore --runtime linux-arm
 COPY test-website-api/ ./
+RUN rm -rf /src/bin /src/obj
 RUN dotnet publish --configuration Release --runtime linux-arm --self-contained false \
-    --no-restore --output /out -p:UseAppHost=false -p:PublishReadyToRun=false \
+    --output /out -p:UseAppHost=false -p:PublishReadyToRun=false \
     -p:BuildInParallel=false -maxcpucount:1
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim-arm32v7
