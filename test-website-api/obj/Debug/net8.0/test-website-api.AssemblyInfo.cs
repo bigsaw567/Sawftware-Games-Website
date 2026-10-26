@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("test-website-api-local-postgresql")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("test-website-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ce50fa0a3a6057ed55f8263257f2237c206d0e9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+653e010127639df769d646b26e8b1ecd3d8bd3df")]
 [assembly: System.Reflection.AssemblyProductAttribute("test-website-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("test-website-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

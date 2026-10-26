@@ -32,7 +32,9 @@ public class AuthController : ControllerBase
             return BadRequest("Name, email, and password are required.");
         }
 
-        var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+        // PostgreSQL text equality is case sensitive, unlike typical SQL Server collations.
+        var email = request.Email.ToLowerInvariant();
+        var emailExists = await _context.Users.AnyAsync(u => u.Email.ToLower() == email);
         if (emailExists)
         {
             return Conflict("That email is already registered.");
@@ -66,7 +68,8 @@ public class AuthController : ControllerBase
             return BadRequest("Email and password are required.");
         }
 
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
+        var email = request.Email.ToLowerInvariant();
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == email);
 
         if (user is null)
         {
