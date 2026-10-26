@@ -1,6 +1,6 @@
 <section class="page-intro shell"><p class="eyebrow">{{ published ? 'READY TO EXPLORE' : 'A WORK IN PROGRESS' }}</p><h1>{{ published ? 'Published games.' : 'Worlds in the making.' }}</h1><p>{{ published ? 'A home for our released games. Discover the worlds we’ve brought to life.' : 'Good things take imagination, iteration, and a little time. Here’s a look at what’s next.' }}</p></section>
 <section class="shell catalog-section" aria-label="Game catalog">
-  <div class="catalog-tabs"><a routerLink="/in-development" [class.selected]="!published">In development</a><a routerLink="/published" [class.selected]="published">Published games</a><span>THE SAWFTWARE COLLECTION</span></div>
+  <div class="catalog-tabs"><a routerLink="/in-development" [class.selected]="!published">In development</a><a routerLink="/published" [class.selected]="published">Published games</a><span><!--THE SAWFTWARE COLLECTION--></span></div>
   <p class="placeholder-note">This collection is getting started. The spaces below are placeholders for future game announcements.</p>
   <div class="game-grid">@for (game of games; track $index) {
     <article class="game-card"><div class="game-cover" [class.alternate-cover]="$index % 2 === 1">
