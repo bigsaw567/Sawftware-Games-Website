@@ -19,6 +19,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/app/games/LuckofanIrishmanWEBGL/LuckOfAnIrishmanWebTest",
+                "output": "games/luck-of-an-irishman"
               }
             ],
             "styles": [

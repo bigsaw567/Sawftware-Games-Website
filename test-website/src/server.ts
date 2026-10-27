@@ -35,6 +35,16 @@ app.use(
   }),
 );
 
+// During ng serve, Unity's HTML must be served before Angular's SSR fallback.
+// Production serves the copied build from browserDistFolder above.
+app.use(
+  '/games/luck-of-an-irishman',
+  express.static(
+    join(process.cwd(), 'src/app/games/LuckofanIrishmanWEBGL/LuckOfAnIrishmanWebTest'),
+    { index: false, redirect: false, maxAge: 0 },
+  ),
+);
+
 /**
  * Handle all other requests by rendering the Angular application.
  */
