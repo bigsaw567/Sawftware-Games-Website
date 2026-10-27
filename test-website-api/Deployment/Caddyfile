@@ -2,21 +2,46 @@
 	skip_install_trust
 }
 
+(maintenance_page) {
+	root * /maintenance
+	rewrite * /index.html
+	method GET
+	header Cache-Control "no-store"
+	header Retry-After "120"
+	file_server {
+		status 503
+	}
+}
+
 {$SITE_ADDRESS} {
 	# A private CA provides HTTPS for a LAN IP/hostname without a public domain.
 	tls internal
 	encode gzip
 
+	@maintenance file {
+		root /maintenance
+		try_files enabled
+	}
 	@api path /api /api/*
-	handle @api {
-		# Preserve /api: handle_path would strip it and break existing routes.
-		reverse_proxy api:8080
+	# Keep maintenance ahead of both API and Angular routes.
+	route {
+		handle @maintenance {
+			import maintenance_page
+		}
+		handle @api {
+			# Preserve /api: handle_path would strip it and break existing routes.
+			reverse_proxy api:8080
+		}
+
+		handle {
+			root * /srv
+			try_files {path} {path}/index.html /index.html
+			header Cache-Control "no-cache"
+			file_server
+		}
 	}
 
-	handle {
-		root * /srv
-		try_files {path} {path}/index.html /index.html
-		header Cache-Control "no-cache"
-		file_server
+	handle_errors 502 503 504 {
+		import maintenance_page
 	}
 }

@@ -12,3 +12,5 @@
 !test-website-api/
 !test-website-api/Deployment/
 !test-website-api/Deployment/Caddyfile
+!test-website-api/Deployment/maintenance/
+!test-website-api/Deployment/maintenance/index.html

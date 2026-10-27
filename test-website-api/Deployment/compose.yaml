@@ -94,6 +94,8 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./maintenance:/maintenance:ro
     networks:
       proxy:
         ipv4_address: 172.30.80.2

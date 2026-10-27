@@ -13,9 +13,27 @@ docker compose config --quiet
 exec 9> .deploy.lock
 flock -n 9 || { echo 'Another deployment is already running.' >&2; exit 1; }
 
-echo 'Building the checked-out source on the Pi. The website pauses during deployment.'
-# Free RAM for the two builds; named volumes are retained.
-docker compose stop web api db
+echo 'Enabling the maintenance page while the source is rebuilt on the Pi.'
+touch maintenance/enabled
+# On the first deployment, build only Caddy + the maintenance page, without Node.
+if ! docker image inspect sawftware-web:pi-armv7 >/dev/null 2>&1; then
+    docker build --platform linux/arm/v7 --target maintenance \
+        -f Dockerfile.web -t sawftware-web:pi-armv7 ../..
+fi
+# This also upgrades existing deployments to the mounted maintenance configuration.
+docker compose up -d --no-deps --no-build web
+attempt=0
+until docker compose exec -T web caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile; do
+    attempt=$((attempt + 1))
+    if [ "$attempt" -ge 15 ]; then
+        echo 'Caddy could not load the maintenance configuration; backend services have not been stopped.' >&2
+        docker compose logs --tail=50 web
+        exit 1
+    fi
+    sleep 1
+done
+# Keep the lightweight web server running; retain all persistent volumes.
+docker compose stop api db
 docker compose build web
 docker compose build api
 docker compose up -d --wait db
@@ -38,6 +56,7 @@ until docker compose exec -T web wget -q -O /dev/null http://api:8080/api/health
     fi
     sleep 2
 done
+rm -f maintenance/enabled
 git rev-parse HEAD > .deployed-revision
 docker compose ps
 echo 'Deployment ready. Open the website at the address in .env.'

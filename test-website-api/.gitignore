@@ -13,3 +13,4 @@ Deployment/backups/
 Deployment/.deploy.lock
 Deployment/.deployed-revision
 Deployment/caddy-root.crt
+Deployment/maintenance/enabled

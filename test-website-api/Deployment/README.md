@@ -51,11 +51,13 @@ configures fast-forward-only pulls in this clone. A pull with no new commits doe
 not rebuild. Manual checkouts and rebases do not trigger this hook. See the
 [Git hook documentation](https://git-scm.com/docs/githooks#_post_merge).
 
-Deployment stops the services to free RAM, builds the frontend and backend one at
-a time, starts PostgreSQL, saves a backup, applies pending EF migrations, starts
-the site, and waits for API/database health. The website is unavailable while
-building. The first build downloads the build/runtime images; subsequent builds
-use Docker's dependency cache. Angular uses one build worker.
+Deployment enables a maintenance page and keeps Caddy running while the backend
+and database are stopped. It builds the frontend and backend one at a time,
+starts PostgreSQL, saves a backup, applies pending EF migrations, and starts the
+updated site. Once API/database health passes, it removes maintenance mode.
+Visitors see the maintenance message and Sawyer's contact email during builds.
+The first build downloads the build/runtime images; subsequent builds use
+Docker's dependency cache. Angular uses one build worker.
 
 If a build is killed with exit code 137, check `free -h` and provide swap on the Pi
 before retrying. Sequential builds reduce memory use but cannot guarantee every
@@ -72,6 +74,25 @@ then run that command. The script stops at failures and does not erase volumes
 or roll back your database. Private backups are in `Deployment/backups/`, ignored
 by Git. Keep copies off the SD card. Do not run `docker compose down -v`, which
 would delete persistent database/certificate volumes.
+
+If a build, migration, or health check fails, the maintenance page stays enabled
+until a successful deployment. Even the first deployment can show maintenance
+before Angular or .NET finishes building: it first prepares a small Caddy-only
+image. Caddy may briefly disconnect while its container is replaced at the end
+of an update; this is a single-web-server deployment.
+
+For manual maintenance, from `test-website-api/Deployment`:
+
+```sh
+touch maintenance/enabled
+```
+
+After completing your work, `rm -f maintenance/enabled` restores the site. No
+Caddy restart is needed to toggle the page. Responses use HTTP 503, `Retry-After`,
+and `Cache-Control: no-store`, including API requests. A proxy connection failure
+also shows the maintenance message. An already-open Angular page will display
+the maintenance screen when the visitor refreshes or navigates to the website;
+there is no live push notification to existing tabs.
 
 ## Open the website
 
