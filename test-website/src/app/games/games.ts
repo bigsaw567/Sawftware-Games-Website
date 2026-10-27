@@ -7,7 +7,7 @@ export interface Game { title: string; description: string; cover: string; gamel
 export class Games {
   readonly published = inject(ActivatedRoute).snapshot.data['published'] === true;
   readonly developmentGames: Game[] = [
-    { title: 'Luck of an Irishman', description: 'This a community builder story game based in 1500s Ireland. Build, expand, and survive diseases, wildlife, and unlucky circumstances.', cover: 'House1.png' , gamelink: 'games/luck-of-an-irishman/index.html'},
+    { title: 'Luck of an Irishman', description: 'This a community builder story game based in 1500s Ireland. Build, expand, and survive diseases, wildlife, and unlucky circumstances.', cover: 'House1.png' , gamelink: 'https://play.unity.com/en/games/8d88f9c1-0fd9-44b2-8db6-4326db3d90bd/luckofanirishmanwebsiterelease'},
     { title: 'Your next game', description: 'A space for your next adventure. Add a short description and cover art when you’re ready to share more.', cover: '', gamelink: ''}
   ];
   readonly publishedGames: Game[] = [
