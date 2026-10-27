@@ -8,7 +8,7 @@ App Tech Stack: Angular 20, TypeScript, ASP.NET Core (.NET 8),
 ****
 
 
-### How to Use the Website:
+### How to Use the Website: 
 
 **The Sign Up/Log In Pages:**
 1. Use your name, email, and password to sign up. Don't worry, your passwords are safe with me 😊 (They are hashed)
