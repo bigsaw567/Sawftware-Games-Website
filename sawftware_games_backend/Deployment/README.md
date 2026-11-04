@@ -1,8 +1,28 @@
-﻿# Deploy by pushing and pulling Git
+# Deploy by pushing and pulling Git
 
 Commit the source and deployment files to GitHub. On the Pi, a one-time setup
 installs a local Git hook. After that, **git pull rebuilds and updates the website**.
 Docker builds Angular and .NET on the Pi; no Windows builds or archives are needed.
+
+## Updating an existing Pi clone after the folder rename
+
+The repository folders are now `sawftware_games_frontend` and
+`sawftware_games_backend`. The GitHub repository URL is unchanged.
+From the repository root on the Pi, run this once:
+
+```sh
+git -c core.hooksPath=/dev/null pull --ff-only
+sh sawftware_games_backend/Deployment/setup-pi.sh
+```
+
+This pull temporarily bypasses the installed hook that still points to the old
+backend directory. Setup installs the new hook and deploys the site. If the old
+`test-website-api/Deployment/.env` exists, setup copies it to the new backend
+folder without printing or changing its contents. Existing database and certificate
+volumes keep the same names. Previous backups remain in the old directory; the
+root `.gitignore` excludes leftover files there. Subsequent updates use plain
+`git pull` again. Keep the `.csproj` filename, DLL name, and Angular's internal
+project name as they are; those identifiers do not need to match folder names.
 
 ## One-time setup on the Pi
 
@@ -12,17 +32,17 @@ installed and usable by your current user:
 ```sh
 git clone https://github.com/bigsaw567/Sawftware-Games-Website.git
 cd Sawftware-Games-Website
-sh test-website-api/Deployment/setup-pi.sh
+sh sawftware_games_backend/Deployment/setup-pi.sh
 ```
 
 If already cloned, pull the new deployment files and run just the setup command.
-The setup generates a private database password in `test-website-api/Deployment/.env`
+The setup generates a private database password in `sawftware_games_backend/Deployment/.env`
 (ignored by Git) and defaults the website address to `https://YOUR_PI_HOSTNAME.local`,
 for example `https://raspberrypi.local`. It prints the address. You need no SSH
 username or numeric IP when running these commands directly on the Pi.
 
 If previously deployed using the archive, copy that deployment's existing `.env`
-into `test-website-api/Deployment/.env` before setup. Existing database volumes
+into `sawftware_games_backend/Deployment/.env` before setup. Existing database volumes
 are retained; setup refuses to generate a new password if it detects an existing
 Pi deployment database without the matching configuration. Windows databases and
 user secrets remain unchanged; Windows accounts are not copied to the Pi.
@@ -30,7 +50,7 @@ user secrets remain unchanged; Windows accounts are not copied to the Pi.
 To choose a different address before first setup:
 
 ```sh
-SITE_ADDRESS=https://raspberrypi.local sh test-website-api/Deployment/setup-pi.sh
+SITE_ADDRESS=https://raspberrypi.local sh sawftware_games_backend/Deployment/setup-pi.sh
 ```
 
 You can also edit `SITE_ADDRESS` in `.env` later and run the deploy script again.
@@ -66,7 +86,7 @@ before retrying. Sequential builds reduce memory use but cannot guarantee every
 To retry a failed deployment or rebuild without pulling:
 
 ```sh
-sh test-website-api/Deployment/deploy.sh
+sh sawftware_games_backend/Deployment/deploy.sh
 ```
 
 If deployment fails, Git has still updated the source. Fix the reported error,
@@ -81,7 +101,7 @@ before Angular or .NET finishes building: it first prepares a small Caddy-only
 image. Caddy may briefly disconnect while its container is replaced at the end
 of an update; this is a single-web-server deployment.
 
-For manual maintenance, from `test-website-api/Deployment`:
+For manual maintenance, from `sawftware_games_backend/Deployment`:
 
 ```sh
 touch maintenance/enabled
@@ -105,7 +125,7 @@ Pi's Caddy root certificate once. Existing Caddy certificate volumes preserve an
 trust you already configured. On the Pi:
 
 ```sh
-cd test-website-api/Deployment
+cd sawftware_games_backend/Deployment
 docker compose cp web:/data/caddy/pki/authorities/local/root.crt ./caddy-root.crt
 ```
 
@@ -125,7 +145,7 @@ need the root imported into its own certificate-authority settings. See
 
 ## Useful commands
 
-From `test-website-api/Deployment` on the Pi:
+From `sawftware_games_backend/Deployment` on the Pi:
 
 ```sh
 docker compose ps

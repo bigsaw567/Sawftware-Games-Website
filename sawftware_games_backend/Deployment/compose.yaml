@@ -48,7 +48,7 @@ services:
     platform: linux/arm/v7
     build:
       context: ../..
-      dockerfile: test-website-api/Deployment/Dockerfile.api
+      dockerfile: sawftware_games_backend/Deployment/Dockerfile.api
     restart: unless-stopped
     environment: *api-environment
     volumes:
@@ -84,7 +84,7 @@ services:
     platform: linux/arm/v7
     build:
       context: ../..
-      dockerfile: test-website-api/Deployment/Dockerfile.web
+      dockerfile: sawftware_games_backend/Deployment/Dockerfile.web
     restart: unless-stopped
     environment:
       SITE_ADDRESS: ${SITE_ADDRESS:?Set an https:// LAN IP or hostname in .env}

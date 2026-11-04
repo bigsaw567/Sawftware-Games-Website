@@ -14,6 +14,14 @@ command -v flock >/dev/null
 docker compose version
 docker info >/dev/null
 
+# Git does not move ignored credentials when tracked directories are renamed.
+legacy_env="$repository/test-website-api/Deployment/.env"
+if [ ! -f "$deployment_dir/.env" ] && [ -f "$legacy_env" ]; then
+    cp "$legacy_env" "$deployment_dir/.env"
+    chmod 600 "$deployment_dir/.env"
+    echo 'Copied existing Pi credentials from the former backend directory.'
+fi
+
 if [ ! -f "$deployment_dir/.env" ]; then
     if docker volume inspect sawftware-games_postgres_data >/dev/null 2>&1; then
         echo 'An existing Pi database was found. Copy its existing .env into this Deployment folder first.' >&2
@@ -35,7 +43,7 @@ chmod 600 "$deployment_dir/.env"
 hook=$(git rev-parse --git-path hooks/post-merge)
 if [ -f "$hook" ] && ! grep -q 'sawftware-pi-auto-deploy' "$hook"; then
     echo "An existing post-merge hook is present at $hook; it has been left unchanged." >&2
-    echo 'Use sh test-website-api/Deployment/deploy.sh after each pull, or integrate the hooks manually.' >&2
+    echo 'Use sh sawftware_games_backend/Deployment/deploy.sh after each pull, or integrate the hooks manually.' >&2
     exit 1
 fi
 mkdir -p "$(dirname -- "$hook")"

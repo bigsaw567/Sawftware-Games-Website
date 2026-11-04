@@ -53,7 +53,7 @@ The Angular development server proxies relative `/api/...` requests to
 In a separate terminal:
 
 ```powershell
-cd ..\test-website
+cd ..\sawftware_games_frontend
 npm start
 ```
 

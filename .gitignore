@@ -1,0 +1,6 @@
+# Keep ignored local files left behind by the directory rename private.
+.env
+.env.*
+!.env.example
+/test-website-api/
+/test-website/

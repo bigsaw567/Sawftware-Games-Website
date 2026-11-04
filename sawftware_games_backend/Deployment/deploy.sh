@@ -6,7 +6,7 @@ deployment_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 cd "$deployment_dir"
 
 if [ ! -f .env ]; then
-    echo 'Run sh test-website-api/Deployment/setup-pi.sh from the repository first.' >&2
+    echo 'Run sh sawftware_games_backend/Deployment/setup-pi.sh from the repository first.' >&2
     exit 1
 fi
 docker compose config --quiet
