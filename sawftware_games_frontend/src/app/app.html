@@ -1,6 +1,8 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header"><div class="nav-shell">
-  <a class="brand" routerLink="/home" (click)="menuOpen = false" aria-label="Sawftware Games home"><span class="brand-symbol" aria-hidden="true">S<span>↗</span></span><span>SAWFTWARE<span class="brand-subtitle">GAMES</span></span></a>
+  <a class="brand" routerLink="/home" (click)="menuOpen = false" aria-label="Sawftware Games home">
+    <img src="sawftware-games-logo.png" alt="Sawftware Games logo" width="160" height="60" aria-hidden="true">
+  </a>
   <button class="menu-toggle" type="button" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-controls="primary-nav">{{ menuOpen ? 'Close ✕' : 'Menu ☰' }}</button>
   <nav id="primary-nav" [class.is-open]="menuOpen" aria-label="Main navigation" (click)="menuOpen = false">
     <a routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a><a routerLink="/in-development" routerLinkActive="active" ariaCurrentWhenActive="page">In development</a><a routerLink="/published" routerLinkActive="active" ariaCurrentWhenActive="page">Published games</a><a routerLink="/feedback" routerLinkActive="active" ariaCurrentWhenActive="page">Feedback</a>
