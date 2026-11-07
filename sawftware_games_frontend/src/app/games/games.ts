@@ -8,11 +8,11 @@ export class Games {
   readonly published = inject(ActivatedRoute).snapshot.data['published'] === true;
   readonly developmentGames: Game[] = [
     { title: 'Luck of an Irishman', description: 'This a community builder story game based in 1500s Ireland. Build, expand, and survive diseases, wildlife, and unlucky circumstances.', cover: 'House1.png' , gamelink: 'https://play.unity.com/en/games/8d88f9c1-0fd9-44b2-8db6-4326db3d90bd/luckofanirishmanwebsiterelease'},
-    { title: 'Your next game', description: 'A space for your next adventure. Add a short description and cover art when you’re ready to share more.', cover: '', gamelink: ''}
+    { title: 'Our next game', description: '', cover: '', gamelink: ''}
   ];
   readonly publishedGames: Game[] = [
-    { title: 'Your published game', description: 'Introduce a released game here. Describe the experience and what makes it worth playing.', cover: '', gamelink: '' },
-    { title: 'Your next release', description: 'A space for another published game. Add its cover art and a short description when it launches.', cover: '', gamelink: '' }
+    { title: 'Our published game', description: '', cover: '', gamelink: '' },
+    { title: 'Our next release', description: '', cover: '', gamelink: '' }
   ];
   get games(): Game[] { return this.published ? this.publishedGames : this.developmentGames; }
 }
