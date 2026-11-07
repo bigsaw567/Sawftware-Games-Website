@@ -2,5 +2,3 @@
 .env
 .env.*
 !.env.example
-/test-website-api/
-/test-website/
